@@ -9,6 +9,7 @@
 'use strict';
 
 var request = require( 'superagent' );
+var querystring = require('querystring');
 
 module.exports = function(grunt) {
 
@@ -20,19 +21,22 @@ module.exports = function(grunt) {
         var options = this.options();
         var done = this.async();
         var data = {
-            type : ! this.data.type ? 'message' : this.data.type,
-            text : this.data.text
+            type : ! options.type ? 'message' : options.type,
+            text : options.text
         }
 
         /** verify there is a token **/
         if ( ! options.token ) {
             grunt.log.error( 'Token is required for Slack API requests' );
             return;
+        } else {
+            data.token = options.token;
         }
 
+
         /** channel? **/
-        if ( this.data.channel) {
-            data.channel = this.data.channel;
+        if ( options.channel) {
+            data.channel = options.channel;
         } else {
             data.channel = '#general';
         }
@@ -55,41 +59,47 @@ module.exports = function(grunt) {
                  * attachment?
                  * todo: need to do some validation of the attachment(s) coming in
                  **/
-                if ( this.data.attachments ) {
-                    data.attachments = this.data.attachments;
+                if ( options.attachments ) {
+                    data.attachments = JSON.stringify(options.attachments);
                 }
-                if ( typeof this.data.as_user !== 'undefined' ) {
-                    data.as_user = this.data.as_user;
+                if ( typeof options.as_user !== 'undefined' ) {
+                    data.as_user = options.as_user;
                 }
-                if ( this.data.username ) {
-                    data.username = this.data.username;
+                if ( options.username ) {
+                    data.username = options.username;
                 } else {
                     data.as_user = true;
                 }
-                if ( this.data.parse ) {
-                    data.parse = this.data.parse;
+                if ( options.parse ) {
+                    data.parse = options.parse;
                 }
-                if ( typeof this.data.link_names !== 'undefined' ) {
-                    data.link_names = this.data.link_names;
+                if ( typeof options.link_names !== 'undefined' ) {
+                    data.link_names = options.link_names;
                 }
-                if ( typeof this.data.unfurl_links !== 'undefined' ) {
-                    data.unfurl_links = this.data.unfurl_links;
+                if ( typeof options.unfurl_links !== 'undefined' ) {
+                    data.unfurl_links = options.unfurl_links;
                 }
-                if ( typeof this.data.unfurl_media !== 'undefined' ) {
-                    data.unfurl_media = this.data.unfurl_media;
+                if ( typeof options.unfurl_media !== 'undefined' ) {
+                    data.unfurl_media = options.unfurl_media;
                 }
-                if ( this.data.icon_url ) {
-                    data.icon_url = this.data.icon_url;
+                if ( options.icon_url ) {
+                    data.icon_url = options.icon_url;
                 }
-                if ( this.data.icon_emoji ) {
-                    data.icon_emoji = this.data.icon_emoji
+                if ( options.icon_emoji ) {
+                    data.icon_emoji = options.icon_emoji
+                }
+
+                if ( options.fields ) {
+                    data.fields = JSON.stringify( options.fields );
                 }
                 break;
         }
 
+        var stringified = querystring.stringify(data);
+
         request.post( options.endpoint )
-            .type( 'form' )
-            .send( 'payload=' + JSON.stringify(data) )
+            .type('form')
+            .send( stringified )
             .end( function(res ) {
                 if ( ! res.ok ) {
                     grunt.log.error( 'Error with slack api: ', res.text );

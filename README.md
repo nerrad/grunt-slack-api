@@ -29,38 +29,40 @@ grunt.initConfig({
       token : 'api-token-from-slack',
     },
     your_target: {
-      type : 'message',
-      channel : '#general',
-      text : 'Your message',
-      attachments: [
-        {
-                    "fallback": "Required plain-text summary of the attachment.",
-                    "color": "#36a64f",
-                    "pretext": "Optional text that appears above the attachment block",
-                    "author_name": "Bobby Tables",
-                    "author_link": "http://flickr.com/bobby/",
-                    "author_icon": "http://flickr.com/icons/bobby.jpg",
-                    "title": "Slack API Documentation",
-                    "title_link": "https://api.slack.com/",
-                    "text": "Optional text that appears within the attachment",
-                    "fields": [
-                        {
-                            "title": "Priority",
-                            "value": "High",
-                            "short": false
-                        }
-                    ],
-                    "image_url": "http://my-website.com/path/to/image.jpg"
-                }
-      ],
-      as_user : false,
-      username : 'GruntSlackBot',
-      parse : 'full',
-      link_names : 1,
-      unfurl_links : true,
-      unfurl_media : false,
-      icon_url : '',
-      icon_emoji : ':chart_with_upwards_trend:'
+      options: {
+          type : 'message',
+          channel : '#general',
+          text : 'Your message',
+          attachments: [
+            {
+                        "fallback": "Required plain-text summary of the attachment.",
+                        "color": "#36a64f",
+                        "pretext": "Optional text that appears above the attachment block",
+                        "author_name": "Bobby Tables",
+                        "author_link": "http://flickr.com/bobby/",
+                        "author_icon": "http://flickr.com/icons/bobby.jpg",
+                        "title": "Slack API Documentation",
+                        "title_link": "https://api.slack.com/",
+                        "text": "Optional text that appears within the attachment",
+                        "fields": [
+                            {
+                                "title": "Priority",
+                                "value": "High",
+                                "short": false
+                            }
+                        ],
+                        "image_url": "http://my-website.com/path/to/image.jpg"
+                    }
+          ],
+          as_user : false,
+          username : 'GruntSlackBot',
+          parse : 'full',
+          link_names : 1,
+          unfurl_links : true,
+          unfurl_media : false,
+          icon_url : '',
+          icon_emoji : ':chart_with_upwards_trend:'
+      }
     },
   },
 });
@@ -84,7 +86,7 @@ This option is not required and is the base endpoint for the api requests to sla
 
 The below are options you add to "your_target" object for what you want to do.
 
-#### your_target.type
+#### options.type
 Type: `String`
 Default value: `message`
 
@@ -93,19 +95,19 @@ The default type of slack api request you are making. Currently there are only t
 - `message` : Uses the Slack `chat.postMessage` endpoint (see https://api.slack.com/methods/chat.postMessage)
 - `topic` : Uses the Slack `channels.setTopic` endpoint (see https://api.slack.com/methods/channels.setTopic)
 
-#### your_target.channel
+#### options.channel
 Type: `String`
 Default value: `#general`
 
 The channel to send the request to.  If not set `#general` is the default.
 
-#### your_target.text
+#### options.text
 Type: `String`
 Default value: ''
 
-When "topic" is the `your_target.type`, the content of this string is used for the topic.  Otherwise, this is the content posted to the channel. Follow the formatting guidelines here: https://api.slack.com/docs/formatting
+When "topic" is the `options.type`, the content of this string is used for the topic.  Otherwise, this is the content posted to the channel. Follow the formatting guidelines here: https://api.slack.com/docs/formatting
 
-#### your_target.attachments
+#### options.attachments
 Type: `Array`
 Default value: null
 
@@ -113,13 +115,13 @@ This is optional.  You can follow guidelines on attachment setup here: https://a
 
 #### Other keys
 
-For all of the below keys, see https://api.slack.com/methods/chat.postMessage, these are only used when `your_target.type` is set to "message".
+For all of the below keys, see https://api.slack.com/methods/chat.postMessage, these are only used when `options.type` is set to "message".
 
-- your_target.as_user
-- your_target.username
-- your_target.parse
-- your_target.link_names
-- your_target.unfurl_links
-- your_target.unfurl_media
-- your_target.icon_url
-- your_target.icon_emoji
+- options.as_user
+- options.username
+- options.parse
+- options.link_names
+- options.unfurl_links
+- options.unfurl_media
+- options.icon_url
+- options.icon_emoji
