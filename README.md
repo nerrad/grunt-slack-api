@@ -26,10 +26,41 @@ In your project's Gruntfile, add a section named `slack_api` to the data object 
 grunt.initConfig({
   slack_api: {
     options: {
-      // Task-specific options go here.
+      token : 'api-token-from-slack',
     },
     your_target: {
-      // Target-specific file lists and/or options go here.
+      type : 'message',
+      channel : '#general',
+      text : 'Your message',
+      attachments: [
+        {
+                    "fallback": "Required plain-text summary of the attachment.",
+                    "color": "#36a64f",
+                    "pretext": "Optional text that appears above the attachment block",
+                    "author_name": "Bobby Tables",
+                    "author_link": "http://flickr.com/bobby/",
+                    "author_icon": "http://flickr.com/icons/bobby.jpg",
+                    "title": "Slack API Documentation",
+                    "title_link": "https://api.slack.com/",
+                    "text": "Optional text that appears within the attachment",
+                    "fields": [
+                        {
+                            "title": "Priority",
+                            "value": "High",
+                            "short": false
+                        }
+                    ],
+                    "image_url": "http://my-website.com/path/to/image.jpg"
+                }
+      ],
+      as_user : false,
+      username : 'GruntSlackBot',
+      parse : 'full',
+      link_names : 1,
+      unfurl_links : true,
+      unfurl_media : false,
+      icon_url : '',
+      icon_emoji : ':chart_with_upwards_trend:'
     },
   },
 });
@@ -37,53 +68,58 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.token
+type: `String`
+Default value: '',
+
+This is the authorization token for Slack API requests.  Get your token from here -> https://api.slack.com/web#basics
+
+#### options.endpoint
 Type: `String`
-Default value: `',  '`
+Default value: `https://slack.com/api/`
 
-A string value that is used to do something with whatever.
+This option is not required and is the base endpoint for the api requests to slack.  Only use this if the slack endpoint changes form the default.
 
-#### options.punctuation
+### Custom Options
+
+The below are options you add to "your_target" object for what you want to do.
+
+#### your_target.type
 Type: `String`
-Default value: `'.'`
+Default value: `message`
 
-A string value that is used to do something else with whatever else.
+The default type of slack api request you are making. Currently there are only two types available:
 
-### Usage Examples
+- `message` : Uses the Slack `chat.postMessage` endpoint (see https://api.slack.com/methods/chat.postMessage)
+- `topic` : Uses the Slack `channels.setTopic` endpoint (see https://api.slack.com/methods/channels.setTopic)
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+#### your_target.channel
+Type: `String`
+Default value: `#general`
 
-```js
-grunt.initConfig({
-  slack_api: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
+The channel to send the request to.  If not set `#general` is the default.
 
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+#### your_target.text
+Type: `String`
+Default value: ''
 
-```js
-grunt.initConfig({
-  slack_api: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
+When "topic" is the `your_target.type`, the content of this string is used for the topic.  Otherwise, this is the content posted to the channel. Follow the formatting guidelines here: https://api.slack.com/docs/formatting
 
-## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+#### your_target.attachments
+Type: `Array`
+Default value: null
 
-## Release History
-_(Nothing yet)_
+This is optional.  You can follow guidelines on attachment setup here: https://api.slack.com/docs/attachments
+
+#### Other keys
+
+For all of the below keys, see https://api.slack.com/methods/chat.postMessage, these are only used when `your_target.type` is set to "message".
+
+- your_target.as_user
+- your_target.username
+- your_target.parse
+- your_target.link_names
+- your_target.unfurl_links
+- your_target.unfurl_media
+- your_target.icon_url
+- your_target.icon_emoji
