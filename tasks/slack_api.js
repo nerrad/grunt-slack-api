@@ -96,7 +96,6 @@ module.exports = function(grunt) {
         }
 
         var stringified = querystring.stringify(data);
-        console.log(stringified);
 
         request.post( options.endpoint )
             .type('form')
@@ -106,7 +105,6 @@ module.exports = function(grunt) {
                     grunt.log.error( 'Error with slack api: ', res.text );
                     return done(false);
                 }
-                console.log( res.text );
                 grunt.log.writeln( "Finished communicating with slack." );
                 done();
             })
