@@ -95,7 +95,9 @@ module.exports = function(grunt) {
                 break;
         }
 
+        console.log(data);
         var stringified = querystring.stringify(data);
+
 
         request.post( options.endpoint )
             .type('form')
