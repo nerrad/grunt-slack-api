@@ -51,7 +51,8 @@ grunt.initConfig({
                                 "short": false
                             }
                         ],
-                        "image_url": "http://my-website.com/path/to/image.jpg"
+                        "image_url": "http://my-website.com/path/to/image.jpg",
+                        "markdwn_in" : ["text","pretext"]
                     }
           ],
           as_user : false,
