@@ -49,6 +49,9 @@ module.exports = function(grunt) {
 
         /** setup various data depending on type of api request **/
         switch ( data.type ) {
+            case 'getChannelInfo' :
+                options.endpoint += 'channels.info';
+                break;
             case 'topic' :
                 options.endpoint += 'channels.setTopic';
                 data.topic = data.text;
@@ -103,6 +106,7 @@ module.exports = function(grunt) {
             .type('form')
             .send( stringified )
             .end( function(res ) {
+                console.log(res.text);
                 if ( ! res.ok ) {
                     grunt.log.error( 'Error with slack api: ', res.text );
                     return done(false);
