@@ -51,6 +51,10 @@ module.exports = function(grunt) {
         switch ( data.type ) {
             case 'getChannelInfo' :
                 options.endpoint += 'channels.info';
+                if ( ! options.callback ) {
+                    grunt.log.error( 'Callback is required for handling the response of a channel info call.' );
+                    return;
+                }
                 break;
             case 'topic' :
                 options.endpoint += 'channels.setTopic';
@@ -112,6 +116,9 @@ module.exports = function(grunt) {
                     return done(false);
                 }
                 grunt.log.writeln( "Finished communicating with slack." );
+                if ( options.callback ) {
+                    options.callback
+                }
                 done();
             })
             .on( 'error', function(err) {
