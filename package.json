@@ -1,7 +1,7 @@
 {
   "name": "grunt-slack-api",
   "description": "A more comprehensive slack api integration using grunt.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/nerrad/grunt-slack-api",
   "author": {
     "name": "Darren Ethier",

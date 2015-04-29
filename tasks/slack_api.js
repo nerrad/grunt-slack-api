@@ -117,7 +117,7 @@ module.exports = function(grunt) {
                 }
                 grunt.log.writeln( "Finished communicating with slack." );
                 if ( options.callback ) {
-                    options.callback
+                    options.callback( JSON.parse( res.text ) );
                 }
                 done();
             })
